@@ -1,0 +1,66 @@
+# Secrets and local client configuration
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+cloud-crm/config/business-profile.json
+cloud-crm/config/leads.json
+
+# Dependencies and build output
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+dist/
+**/dist/
+build/
+**/build/
+coverage/
+**/coverage/
+*.tsbuildinfo
+*.log
+
+# Deployment link state
+.vercel/
+**/.vercel/
+
+# Installed provider skills and local tool state
+.clawhub/
+skills/@clawcall-dev/
+cloud-crm/.agents/skills/
+cloud-crm/skills-lock.json
+
+# Campaign state, exports, recordings, and generated deliverables
+outputs/
+presentation-output/
+recordings/
+call-recordings/
+transcripts/
+exports/
+cloud-crm/src/data/legacy-seed.json
+cloud-crm/scripts/add-weekend-leads-*.mjs
+cloud-crm/scripts/*recovery*.mjs
+*.xlsx
+*.xls
+*.xlsm
+*.ods
+*.csv
+*.mp3
+*.m4a
+*.wav
+*.ogg
+*.ppt
+*.pptx
+
+# Local databases, editor files, and OS metadata
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+.DS_Store
+.idea/
+.vscode/
+*.swp
+.codex_work/

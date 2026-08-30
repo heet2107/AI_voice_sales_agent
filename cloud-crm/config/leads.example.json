@@ -1,0 +1,24 @@
+[
+  {
+    "id": "example-lead-001",
+    "business": "Example Local Business",
+    "category": "Example category",
+    "segment": "local_business",
+    "city": "Your City",
+    "address": "123 Example Street",
+    "phone": "+15555550100",
+    "websiteUrl": "https://example.com/",
+    "socialUrl": null,
+    "evidenceNotes": "Replace with current, source-backed verification evidence. Do not treat hypotheses as facts.",
+    "primarySourceUrl": "https://example.com/",
+    "presenceCheckUrl": "https://example.com/",
+    "verifiedOn": "2026-01-01",
+    "confidence": "Low",
+    "leadScore": 0,
+    "priority": "Low",
+    "qualified": false,
+    "businessHours": {
+      "mon": [["09:00", "17:00"]]
+    }
+  }
+]

@@ -1,0 +1,75 @@
+{
+  "profileVersion": 1,
+  "company": {
+    "name": "Example Company",
+    "shortName": "Example Co",
+    "websiteUrl": "https://example.com/",
+    "homeBase": "Your City",
+    "description": "a local business services company",
+    "valueProposition": "help customers get a faster response and a clearer path to the right service",
+    "services": [
+      { "name": "Primary service", "summary": "the smallest customer problem this service solves" },
+      { "name": "Secondary service", "summary": "the specific workflow this service improves" }
+    ]
+  },
+  "agent": {
+    "name": "Alex Morgan",
+    "title": "Director of Client Partnerships",
+    "shortTitle": "Client Partnerships",
+    "voice": "jessica",
+    "tone": ["warm", "concise", "confident", "curious", "respectful"]
+  },
+  "outreach": {
+    "regions": ["Your City, State"],
+    "segments": [
+      {
+        "id": "best-fit-customers",
+        "label": "Best-fit customers",
+        "leadSegmentValues": ["best_fit"],
+        "categories": ["category one", "category two"],
+        "decisionMakerRoles": ["owner", "operations manager"]
+      }
+    ],
+    "defaultDiscoveryQuestion": "how does your team currently handle new customer inquiries when everyone is busy?"
+  },
+  "operations": {
+    "timezone": "America/Chicago",
+    "dailyCallCap": 15,
+    "maxLifetimeAttempts": 3,
+    "retryDelayMinutes": 80,
+    "callSlots": ["10:00", "10:20", "10:40", "11:00", "11:20", "11:40", "12:00", "12:20", "12:40", "13:00", "13:20", "13:40", "14:00", "14:20", "14:40"],
+    "segmentTargets": [
+      { "segmentId": "best-fit-customers", "minimum": 1, "maximum": 15 }
+    ],
+    "startPaused": true
+  },
+  "contact": {
+    "publicPhone": "(555) 555-0100",
+    "scheduling": {
+      "mode": "follow_up_link",
+      "url": "https://example.com/book",
+      "inquiryCallLabel": "discovery call",
+      "durationMinutes": 15,
+      "fallbackPhrase": "We'll send you the calendar link shortly."
+    }
+  },
+  "disclosure": {
+    "recordingRequired": true,
+    "recordingInstruction": "Keep the calling provider's required recording disclosure enabled.",
+    "aiDisclosurePolicy": "on_direct_question",
+    "truthfulAiResponse": "Yes, I'm an AI calling on behalf of Example Company. I can arrange a human follow-up if you prefer."
+  },
+  "guardrails": {
+    "neverDiscussPricing": true,
+    "honorOptOut": true,
+    "noGuarantees": true,
+    "prohibitedData": ["payment details", "passwords", "sensitive personal information"],
+    "additional": ["Do not manufacture urgency.", "Do not state unverified claims as facts."]
+  },
+  "branding": {
+    "appName": "Example Company Calling CRM",
+    "crmLabel": "Calling CRM",
+    "regionLabel": "Your Service Area",
+    "operatorName": "Team"
+  }
+}

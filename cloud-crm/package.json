@@ -1,0 +1,39 @@
+{
+  "name": "ai-voice-sales-agent-crm",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "config:check": "node --env-file-if-exists=.env.local --import tsx scripts/validate-business-profile.ts",
+    "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
+    "db:seed": "node --env-file=.env.local scripts/seed.mjs",
+    "leads:import": "node --env-file-if-exists=.env.local scripts/import-leads.mjs",
+    "intelligence:backfill": "node --env-file=.env.local --import tsx scripts/backfill-intelligence.ts",
+    "calibration:prepare": "node --env-file=.env.local --import tsx scripts/prepare-calibration-set.ts"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "ai": "6.0.116",
+    "lucide-react": "1.29.0",
+    "next": "16.3.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.7"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

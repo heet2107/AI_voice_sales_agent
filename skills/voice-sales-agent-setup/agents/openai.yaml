@@ -1,0 +1,4 @@
+interface:
+  display_name: "Voice Sales Agent Setup"
+  short_description: "Configure and verify a client calling CRM"
+  default_prompt: "Use $voice-sales-agent-setup to configure this CRM for a new client and verify readiness without activating outreach."
