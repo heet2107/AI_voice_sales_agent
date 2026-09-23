@@ -7,16 +7,35 @@ import { prepareTodayQueue } from "@/app/actions";
 import { loadBusinessProfile } from "@/lib/business-config";
 
 export default async function DashboardPage() {
-  const data = await getDashboardData();
+  const profile = loadBusinessProfile();
+  const agentFirstName = profile.agent.name.split(/\s+/)[0] || profile.agent.name;
+  let data: Awaited<ReturnType<typeof getDashboardData>>;
+  let dataError: Error | null = null;
+  try {
+    data = await getDashboardData();
+  } catch (error) {
+    dataError = error instanceof Error ? error : new Error("Dashboard data is temporarily unavailable.");
+    data = {
+      stats: {},
+      queue: [],
+      recentCalls: [],
+      followUps: [],
+      pipeline: [],
+      segment: [],
+      campaignEnabled: false,
+      dailyCallCap: profile.operations.dailyCallCap,
+      timezone: profile.operations.timezone,
+      hardMode: process.env.CAMPAIGN_MODE ?? "paused"
+    };
+  }
   const stats = data.stats as Record<string, number>;
   const maxPipeline = Math.max(...data.pipeline.map((row) => Number(row.count)), 1);
   const operational = data.hardMode === "live" && data.campaignEnabled;
-  const profile = loadBusinessProfile();
-  const agentFirstName = profile.agent.name.split(/\s+/)[0] || profile.agent.name;
 
   return (
     <>
       <PageTitle eyebrow="Operations overview" title={`Good morning, ${profile.branding.operatorName}.`} description={`One place to see what ${agentFirstName} called, learned, and needs next.`} action={<div className={`status-card ${operational ? "on" : "off"}`}>{operational ? <PhoneCall size={19} /> : <CirclePause size={19} />}<div><strong>{operational ? "Campaign live" : "Campaign paused"}</strong><span>{data.dailyCallCap} daily attempts · {profile.operations.timezone}</span></div></div>} />
+      {dataError ? <section className="panel span-2"><div className="panel-heading"><div><span className="eyebrow">Database unavailable</span><h2>CRM data is temporarily offline</h2></div></div><p className="muted">The portal accepted the dashboard shell, but the database is not returning CRM records right now. Latest error: {dataError.message}</p></section> : null}
       <section className="metrics-grid">
         <Metric label="Qualified leads" value={stats.qualified_leads ?? 0} note={`${stats.total_leads ?? 0} total researched`} tone="blue" />
         <Metric label="Contacted" value={stats.contacted ?? 0} note="Across all attempts" tone="violet" />

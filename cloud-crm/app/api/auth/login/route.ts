@@ -13,7 +13,10 @@ export async function POST(request: NextRequest) {
     const attempts = await db().query(
       "SELECT failure_count, window_started_at, blocked_until FROM login_attempts WHERE identity_hash=$1",
       [identity]
-    );
+    ).catch((error) => {
+      console.error("Login attempt lookup failed", error);
+      return [];
+    });
     const record = attempts[0];
     if (record?.blocked_until && new Date(record.blocked_until).getTime() > Date.now()) {
       return NextResponse.json({ error: "Too many attempts. Try again later." }, { status: 429 });
@@ -30,16 +33,16 @@ export async function POST(request: NextRequest) {
            window_started_at=CASE WHEN login_attempts.window_started_at < now()-($2 || ' minutes')::interval THEN now() ELSE login_attempts.window_started_at END,
            blocked_until=CASE WHEN
              (CASE WHEN login_attempts.window_started_at < now()-($2 || ' minutes')::interval THEN 1 ELSE login_attempts.failure_count+1 END) >= $3
-             THEN now()+($4 || ' minutes')::interval ELSE NULL END,
+           THEN now()+($4 || ' minutes')::interval ELSE NULL END,
            updated_at=now()`,
         [identity, WINDOW_MINUTES, MAX_FAILURES, BLOCK_MINUTES]
-      );
-      await logActivity("auth", identity.slice(0, 12), "login_failed");
+      ).catch((error) => console.error("Login failure tracking failed", error));
+      await logActivity("auth", identity.slice(0, 12), "login_failed").catch((error) => console.error("Login failure activity failed", error));
       return NextResponse.json({ error: "Incorrect passcode." }, { status: 401 });
     }
 
-    await db().query("DELETE FROM login_attempts WHERE identity_hash=$1", [identity]);
-    await logActivity("auth", identity.slice(0, 12), "login_succeeded");
+    await db().query("DELETE FROM login_attempts WHERE identity_hash=$1", [identity]).catch((error) => console.error("Login attempt reset failed", error));
+    await logActivity("auth", identity.slice(0, 12), "login_succeeded").catch((error) => console.error("Login success activity failed", error));
     const response = NextResponse.json({ ok: true });
     response.cookies.set(SESSION_COOKIE, await createSessionToken(), sessionCookieOptions);
     return response;
