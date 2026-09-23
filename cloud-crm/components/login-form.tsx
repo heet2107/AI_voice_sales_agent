@@ -13,7 +13,10 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     setError(""); setLoading(true);
     try {
       const response = await fetch("/api/auth/login", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ passcode }) });
-      const payload = await response.json();
+      const contentType = response.headers.get("content-type") ?? "";
+      const payload = contentType.includes("application/json")
+        ? await response.json().catch(() => ({}))
+        : {};
       if (!response.ok) throw new Error(payload.error || "Unable to sign in");
       window.location.assign(nextPath.startsWith("/") ? nextPath : "/");
     } catch (cause) {
